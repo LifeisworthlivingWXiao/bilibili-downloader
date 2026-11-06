@@ -83,6 +83,7 @@ def build(selected):
         folder.mkdir()
         binary = folder / "BilibiliDownloader.exe"
         tools = folder / "tools"
+        minimum = "11.0" if arch == "arm64" else "13.0"
         if system == "darwin":
             contents = folder / "Bilibili下载器.app" / "Contents"
             binary = contents / "MacOS" / "BilibiliEngine"
@@ -92,7 +93,7 @@ def build(selected):
                 "CFBundleExecutable": "BilibiliDownloader", "CFBundleIdentifier": "local.bilidownloader",
                 "CFBundleName": "Bilibili下载器", "CFBundlePackageType": "APPL",
                 "CFBundleVersion": "2.0", "CFBundleShortVersionString": "2.0.0",
-                "LSMinimumSystemVersion": "11.0",
+                "LSMinimumSystemVersion": minimum,
             }))
         shutil.copytree(CACHE / platform, tools)
         exe = ".exe" if system == "windows" else ""
@@ -105,7 +106,7 @@ def build(selected):
             env={**os.environ, "GOOS": system, "GOARCH": arch, "CGO_ENABLED": "0"})
         shutil.copy2("README.md", folder / ("README.md" if exe else "使用说明.md"))
         if system == "darwin":
-            target = ("arm64" if arch == "arm64" else "x86_64") + "-apple-macos11"
+            target = ("arm64" if arch == "arm64" else "x86_64") + f"-apple-macos{minimum}"
             run("xcrun", "swiftc", "-O", "-target", target, "macos.swift",
                 "-o", str(binary.with_name("BilibiliDownloader")))
             run("codesign", "--force", "--sign", "-", str(binary))

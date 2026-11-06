@@ -2,7 +2,7 @@
 
 从 [GitHub Releases](https://github.com/LifeisworthlivingWXiao/bilibili-downloader/releases/latest) 下载与你的系统匹配的 ZIP。
 
-1. 解压整个 ZIP。Windows 10/11 x64 双击 `BilibiliDownloader.exe`。macOS 11 及以上按芯片选择 Apple Silicon 或 Intel 包，双击 `Bilibili下载器.app`。
+1. 解压整个 ZIP。Windows 10/11 x64 双击 `BilibiliDownloader.exe`。macOS 按芯片选择 Apple Silicon（macOS 11+）或 Intel（macOS 13+）包，双击 `Bilibili下载器.app`。
 2. 应用会打开独立的桌面窗口。粘贴 B 站视频链接、b23.tv 分享链接、分享文本或 BV/av 号。多分 P 视频可用带 `?p=2` 等参数的链接指定分 P。
 3. 选择 MP4 视频、MP3 音频或 M4A 音频。默认保存到用户目录的 `Downloads/Bilibili`，也可以点击「选择…」或填写其他绝对路径。
 4. 下载完成后点「打开保存目录」。用完可关闭应用窗口。取消后可能保留部分文件，可用原任务继续下载。
