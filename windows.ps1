@@ -4,6 +4,7 @@ Add-Type -AssemblyName System.Drawing
 $form = New-Object Windows.Forms.Form
 $form.Text = 'Bilibili 下载器'
 $form.ClientSize = New-Object Drawing.Size(680, 490)
+$form.AutoScaleMode = 'Dpi'
 $form.FormBorderStyle = 'FixedDialog'
 $form.MaximizeBox = $false
 $form.StartPosition = 'CenterScreen'
@@ -42,11 +43,11 @@ $script:initialized = $false
 function CallApi($action, $payload) {
     $headers = @{ 'X-Bili-Token' = $env:BILI_TOKEN }
     if ($action -eq 'state') {
-        return Invoke-RestMethod -Uri "$env:BILI_ORIGIN/api/state" -Headers $headers -TimeoutSec 2
+        return Invoke-RestMethod -UseBasicParsing -Uri "$env:BILI_ORIGIN/api/state" -Headers $headers -TimeoutSec 2
     }
     $headers.Origin = $env:BILI_ORIGIN
     $body = [Text.Encoding]::UTF8.GetBytes(($payload | ConvertTo-Json -Compress))
-    Invoke-RestMethod -Uri "$env:BILI_ORIGIN/api/$action" -Headers $headers -Method Post -ContentType 'application/json; charset=utf-8' -Body $body -TimeoutSec 3
+    Invoke-RestMethod -UseBasicParsing -Uri "$env:BILI_ORIGIN/api/$action" -Headers $headers -Method Post -ContentType 'application/json; charset=utf-8' -Body $body -TimeoutSec 3
 }
 function RefreshState {
     $state = CallApi 'state'

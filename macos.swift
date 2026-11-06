@@ -19,6 +19,7 @@ final class Downloader: NSObject, NSApplicationDelegate, NSWindowDelegate {
     var cancelButton: NSButton!
 
     func applicationDidFinishLaunching(_ notification: Notification) {
+        buildMenu()
         buildWindow()
         do {
             try startEngine()
@@ -36,6 +37,25 @@ final class Downloader: NSObject, NSApplicationDelegate, NSWindowDelegate {
             status.stringValue = "下载引擎启动失败"
             showError(error.localizedDescription)
         }
+    }
+
+    func buildMenu() {
+        let bar = NSMenu()
+        let appItem = NSMenuItem()
+        let appMenu = NSMenu()
+        appMenu.addItem(withTitle: "退出 Bilibili 下载器", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
+        appItem.submenu = appMenu
+        bar.addItem(appItem)
+
+        let editItem = NSMenuItem()
+        let edit = NSMenu(title: "编辑")
+        edit.addItem(withTitle: "剪切", action: #selector(NSText.cut(_:)), keyEquivalent: "x")
+        edit.addItem(withTitle: "复制", action: #selector(NSText.copy(_:)), keyEquivalent: "c")
+        edit.addItem(withTitle: "粘贴", action: #selector(NSText.paste(_:)), keyEquivalent: "v")
+        edit.addItem(withTitle: "全选", action: #selector(NSText.selectAll(_:)), keyEquivalent: "a")
+        editItem.submenu = edit
+        bar.addItem(editItem)
+        NSApp.mainMenu = bar
     }
 
     func buildWindow() {
