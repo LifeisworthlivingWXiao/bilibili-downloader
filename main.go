@@ -81,9 +81,13 @@ func (a *app) appendLog(line string) {
 }
 
 func (a *app) download(ctx context.Context, target, format, folder string) {
+	filename := "%(title)s [%(id)s].%(ext)s"
+	if format != "mp4" {
+		filename = "%(title)s [%(id)s] [" + strings.ToUpper(format) + "].%(ext)s"
+	}
 	args := []string{"--ignore-config", "--no-playlist", "--newline", "--no-colors", "--progress",
 		"--encoding", "utf-8", "--windows-filenames", "--trim-filenames", "130", "--no-overwrites",
-		"--ffmpeg-location", a.tools, "-P", folder, "-o", "%(title)s [%(id)s].%(ext)s",
+		"--ffmpeg-location", a.tools, "-P", folder, "-o", filename,
 		"--no-simulate", "--print", "after_move:FINAL:%(filepath)s"}
 	args = append(args, formats[format]...)
 	args = append(args, "--", target)
@@ -117,7 +121,7 @@ func (a *app) download(ctx context.Context, target, format, folder string) {
 		}
 	}
 	if err == nil {
-		if info, statErr := os.Stat(file); statErr != nil || !info.Mode().IsRegular() || info.Size() == 0 {
+		if info, statErr := os.Stat(file); statErr != nil || !info.Mode().IsRegular() || info.Size() == 0 || !strings.EqualFold(filepath.Ext(file), "."+format) {
 			err = errors.New("未找到有效的输出文件")
 		}
 	}
